@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCWORLD FORUM - 玩家社区</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #c2b994;
+            font-family: 'Segoe UI', 'Verdana', Tahoma, 'Microsoft YaHei', sans-serif;
+            font-size: 13px;
+            color: #2b2a1e;
+            padding: 25px 20px;
+        }
+        .forum {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fefcf5;
+            border-radius: 8px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            border: 1px solid #b6a77c;
+            overflow: hidden;
+        }
+        .header {
+            background: #2f2c21;
+            padding: 16px 24px;
+            border-bottom: 3px solid #a39262;
+        }
+        .header h1 {
+            color: #f2e5b0;
+            font-size: 26px;
+            font-family: 'Courier New', monospace;
+            font-weight: normal;
+        }
+        .header p {
+            color: #cfc18a;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+        .navbar {
+            background: #e5ddc5;
+            border-bottom: 1px solid #cdc09c;
+            padding-left: 20px;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .navbar li {
+            padding: 10px 22px;
+            font-weight: bold;
+            color: #554b30;
+            cursor: pointer;
+            border-right: 1px solid #cdc09c;
+        }
+        .navbar li:hover {
+            background: #d9cfb2;
+        }
+        .navbar li.active {
+            background: #fefcf5;
+            color: #3b6b3b;
+            border-bottom: 2px solid #fefcf5;
+            margin-bottom: -1px;
+        }
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .sidebar {
+            width: 220px;
+            background: #f4efdf;
+            border-right: 1px solid #dfd2b6;
+            padding: 18px 14px;
+        }
+        .user-card {
+            background: #fffdf5;
+            border: 1px solid #e2d5b8;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .user-card .name {
+            font-weight: bold;
+            font-size: 14px;
+            color: #4f5d3a;
+        }
+        .user-card .status {
+            font-size: 11px;
+            color: #8f7e58;
+            margin-top: 8px;
+            border-top: 1px dashed #e0d4bb;
+            padding-top: 6px;
+        }
+        .info-box {
+            background: #fffdf5;
+            border: 1px solid #e2d5b8;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 18px;
+        }
+        .info-box h4 {
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #6b5a3a;
+            border-left: 3px solid #b7a56e;
+            padding-left: 8px;
+        }
+        .info-box p {
+            font-size: 11px;
+            color: #7f6f4a;
+            line-height: 1.5;
+        }
+        .content {
+            flex: 1;
+            background: #ffffff;
+            padding: 22px 26px;
+            min-height: 500px;
+        }
+        .board-item {
+            background: #fefcf7;
+            border: 1px solid #e9dfc6;
+            border-left: 4px solid #baab7a;
+            padding: 14px 18px;
+            margin-bottom: 14px;
+            cursor: pointer;
+        }
+        .board-item:hover {
+            background: #fef8ec;
+            border-left-color: #7a9662;
+        }
+        .board-item h3 {
+            font-size: 17px;
+            font-weight: normal;
+            margin-bottom: 5px;
+            color: #4d442b;
+        }
+        .board-item p {
+            font-size: 12px;
+            color: #8e7e56;
+        }
+        .board-item.dead {
+            opacity: 0.6;
+            cursor: default;
+            border-left-color: #b2a06d;
+        }
+        .board-item.dead:hover {
+            background: #fefcf7;
+        }
+        .thread-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #e3d7bb;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: #6b5e40;
+            font-size: 12px;
+        }
+        .thread-row {
+            border-bottom: 1px solid #f1e9d6;
+            padding: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .thread-row:hover {
+            background: #fffcf0;
+        }
+        .thread-title {
+            font-size: 14px;
+            color: #2f5a2f;
+        }
+        .thread-meta {
+            font-size: 11px;
+            color: #ac9a6b;
+        }
+        .post-container {
+            background: #fefcf7;
+            border: 1px solid #ede2cb;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        .post-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e2d5ba;
+        }
+        .post-meta {
+            font-size: 12px;
+            color: #8e7b4f;
+            margin-bottom: 20px;
+        }
+        .post-body {
+            background: #fffef9;
+            padding: 18px;
+            border: 1px solid #f0e6d2;
+            line-height: 1.6;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        .replies {
+            margin-top: 25px;
+            border-top: 1px solid #e9ddc4;
+            padding-top: 18px;
+        }
+        .reply-item {
+            background: #fefcf5;
+            border-bottom: 1px solid #eee2cf;
+            padding: 12px 0;
+        }
+        .reply-author {
+            font-weight: bold;
+            font-size: 12px;
+            color: #7a673f;
+        }
+        .reply-content {
+            font-size: 13px;
+            margin-top: 5px;
+            color: #4a412c;
+        }
+        .pagination {
+            margin-top: 25px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .page-btn {
+            padding: 4px 12px;
+            background: #e8dfc8;
+            border: 1px solid #cdc09c;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .back-btn {
+            background: #e0d3b6;
+            border: none;
+            padding: 5px 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+        footer {
+            background: #ece3cf;
+            border-top: 1px solid #d5c8ab;
+            text-align: center;
+            padding: 12px;
+            font-size: 11px;
+            color: #9a8a62;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e6dac2;
+            margin: 12px 0;
+        }
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #dfd2b6;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="forum">
+    <div class="header">
+        <h1>MCWORLD FORUM</h1>
+        <p>Minecraft 中文社区 | 自由 开放 交流</p>
+    </div>
+    <div class="navbar">
+        <ul>
+            <li id="navIndex" class="active">首页</li>
+            <li id="navDiscuss">讨论区</li>
+            <li id="navResource">资源发布</li>
+            <li id="navServer">服务器列表</li>
+            <li id="navMember">成员</li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="sidebar">
+            <div class="user-card">
+                <div class="name">游客，你好</div>
+                <div class="status">未登录 | 注册 | 登录</div>
+            </div>
+            <div class="info-box">
+                <h4>论坛统计</h4>
+                <p>今日: 87 | 昨日: 143<br>帖子: 24123 | 会员: 4862</p>
+            </div>
+            <div class="info-box">
+                <h4>最新消息</h4>
+                <p>欢迎来到MCWORLD，2016年创立的纯净社区。</p>
+            </div>
+        </div>
+        <div class="content" id="mainContent">
+            <div style="text-align:center; padding:40px;">加载中...</div>
+        </div>
+    </div>
+    <footer>
+        MCWORLD FORUM - Since 2016
+    </footer>
+</div>
+
+<script>
+    // ------------------------------
+    // 板块数据（只有讨论区可用，其他失效）
+    // ------------------------------
+    const boards = [
+        { id: 1, name: "综合讨论区", desc: "Minecraft 综合话题讨论", available: true, threadCount: 342 },
+        { id: 2, name: "模组发布区", desc: "分享各类模组与整合包", available: false, threadCount: 0 },
+        { id: 3, name: "服务器宣传", desc: "寻找服务器或发布你的世界", available: false, threadCount: 0 },
+        { id: 4, name: "红石研究", desc: "红石电路与机械", available: false, threadCount: 0 },
+        { id: 5, name: "建筑展示", desc: "作品截图与存档分享", available: false, threadCount: 0 },
+        { id: 6, name: "创作区", desc: "皮肤/地图/数据包", available: false, threadCount: 0 }
+    ];
+
+    // 讨论区帖子（2016年风格：PE版，1.7.10，暮色森林，天堂传送门等，包含未命名用户关于Ember_glow的帖子）
+    // 每个帖子自带回复数据
+    const discussionThreads = [
+        {
+            id: 1,
+            title: "[PE版] 0.15.0 怎么去天堂？我做了萤石传送门没用啊",
+            author: "pe玩家小明",
+            date: "2016-05-12",
+            replyCount: 8,
+            content: "我按照网上说的，用萤石搭了一个4x5的传送门框架，然后用金镐右击，怎么没反应？PE版是不是不能去天堂？求大佬解答。",
+            replies: [
+                { author: "红石学徒", content: "PE版没有天堂维度，那是PC版的mod，叫以太mod。你被误导了。" },
+                { author: "pe玩家小明", content: "啊这样...好吧，那PE版有什么好玩的维度吗？" },
+                { author: "暮色粉丝", content: "PE可以装暮色森林的插件，不过需要自己找资源。" }
+            ]
+        },
+        {
+            id: 2,
+            title: "[1.7.10] 暮色森林的娜迦怎么打？死了三次了",
+            author: "勇者阿强",
+            date: "2016-07-03",
+            replyCount: 15,
+            content: "版本1.7.10，暮色森林mod。娜迦庭院找到了，但那家伙冲撞太猛，我铁装扛不住。求打法。",
+            replies: [
+                { author: "老玩家", content: "用弓放风筝，绕着柱子跑。别穿铁甲，至少钻石甲。" },
+                { author: "勇者阿强", content: "谢谢，我试试。钻石太难挖了。" },
+                { author: "mod狂魔", content: "可以带一桶水，把它卡在水里。" }
+            ]
+        },
+        {
+            id: 3,
+            title: "有人认识 Ember_glow 吗？他在我的服务器里熊人",
+            author: "未命名用户",
+            date: "2016-08-19",
+            replyCount: 11,
+            content: "我开了一个小服务器，就几个朋友玩。这几天来了一个叫 Ember_glow 的人，不知道他怎么找到IP的。他开始到处破坏，用TNT炸房子，还在告示牌上写奇怪的话。我封了他IP，他换号又来。有人认识这个人吗？留言里写着“gwko”。",
+            replies: [
+                { author: "路人甲", content: "没听过，可能是哪个熊孩子。" },
+                { author: "服务器主", content: "建议加白名单，开正版验证。" },
+                { author: "未命名用户", content: "开了正版验证，他还是能进来，好像有多个正版号。" },
+                { author: "恐惧", content: "有点恐怖啊，黑进服务器的？" }
+            ]
+        },
+        {
+            id: 4,
+            title: "1.7.10 工业2 怎么让机械不爆炸？",
+            author: "科技小白",
+            date: "2016-06-25",
+            replyCount: 5,
+            content: "刚玩工业2，机器一接高压就炸，变压器怎么用啊？",
+            replies: [
+                { author: "电工", content: "需要用变压器降压，MFSU输出512，用MV变压器转成128。" }
+            ]
+        },
+        {
+            id: 5,
+            title: "分享一个我做的天堂传送门地图",
+            author: "建筑小匠",
+            date: "2016-07-18",
+            replyCount: 22,
+            content: "做了一个以太mod风格的空岛地图，里面有完整的天堂传送门，需要的留邮箱。",
+            replies: [
+                { author: "萌新", content: "求发，101010@qq.com 谢谢！" },
+                { author: "建筑小匠", content: "楼上已发。" }
+            ]
+        },
+        {
+            id: 6,
+            title: "PE版有没有类似暮色森林的addon？",
+            author: "手机玩家",
+            date: "2016-05-30",
+            replyCount: 3,
+            content: "找了好久没找到，求推荐。",
+            replies: [
+                { author: "mod搬运工", content: "有个叫TwiForest的addon，不过BUG很多。" }
+            ]
+        }
+    ];
+
+    let currentView = "boardList";
+    let currentThread = null;
+
+    const contentDiv = document.getElementById("mainContent");
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // 板块列表
+    function renderBoardList() {
+        currentView = "boardList";
+        let html = `<h2 style="margin-bottom: 18px; font-weight: normal;">论坛板块</h2>`;
+        boards.forEach(board => {
+            if (board.available) {
+                html += `
+                    <div class="board-item" data-board-id="${board.id}">
+                        <h3>${escapeHtml(board.name)}</h3>
+                        <p>${escapeHtml(board.desc)}</p>
+                        <div style="font-size: 11px; margin-top: 6px; color:#b8a775;">主题: ${board.threadCount}</div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="board-item dead" data-board-id="${board.id}">
+                        <h3><span style="color:#b3a070;">${escapeHtml(board.name)}</span> <span style="font-size:11px;">[无法访问]</span></h3>
+                        <p>${escapeHtml(board.desc)}</p>
+                    </div>
+                `;
+            }
+        });
+        contentDiv.innerHTML = html;
+
+        document.querySelectorAll('.board-item[data-board-id]').forEach(el => {
+            const boardId = parseInt(el.getAttribute('data-board-id'));
+            const board = boards.find(b => b.id === boardId);
+            if (board && board.available) {
+                el.addEventListener('click', () => renderThreadList());
+            } else {
+                el.addEventListener('click', () => alert("该板块暂时无法访问。"));
+            }
+        });
+    }
+
+    // 帖子列表（带失效的分页）
+    function renderThreadList() {
+        currentView = "threadList";
+        let html = `<div style="margin-bottom: 18px;">
+                        <button class="back-btn" id="backHomeBtn">返回板块首页</button>
+                    </div>
+                    <h2 style="margin-bottom: 8px;">综合讨论区</h2>
+                    <div class="thread-header">
+                        <span>主题</span>
+                        <span>回复 / 作者</span>
+                    </div>
+                    <div class="thread-list">`;
+        discussionThreads.forEach(thread => {
+            html += `
+                <div class="thread-row" data-thread-id="${thread.id}">
+                    <div class="thread-title">${escapeHtml(thread.title)}</div>
+                    <div class="thread-meta">${thread.replyCount} 回复 · ${escapeHtml(thread.author)}</div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+
+        // 失效的分页组件
+        html += `<div class="pagination">
+                    <span class="page-btn disabled">上一页</span>
+                    <span class="page-btn">1</span>
+                    <span class="page-btn disabled">下一页</span>
+                </div>`;
+        contentDiv.innerHTML = html;
+
+        document.getElementById("backHomeBtn")?.addEventListener("click", () => renderBoardList());
+
+        // 分页按钮全部失效
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            if (btn.innerText !== "1") {
+                btn.addEventListener('click', () => alert("无法加载更多帖子。"));
+            } else {
+                btn.addEventListener('click', () => {});
+            }
+        });
+
+        // 绑定帖子点击
+        document.querySelectorAll('.thread-row').forEach(el => {
+            const tid = parseInt(el.getAttribute('data-thread-id'));
+            const thread = discussionThreads.find(t => t.id === tid);
+            if (thread) {
+                el.addEventListener('click', () => renderPostDetail(thread));
+            }
+        });
+    }
+
+    // 帖子详情（包含回复区和失效分页）
+    function renderPostDetail(thread) {
+        currentView = "postDetail";
+        currentThread = thread;
+        let repliesHtml = '';
+        if (thread.replies && thread.replies.length) {
+            repliesHtml = `<div class="replies"><h4 style="margin-bottom: 12px;">回复 (${thread.replies.length})</h4>`;
+            thread.replies.forEach(rep => {
+                repliesHtml += `
+                    <div class="reply-item">
+                        <div class="reply-author">${escapeHtml(rep.author)}</div>
+                        <div class="reply-content">${escapeHtml(rep.content)}</div>
+                    </div>
+                `;
+            });
+            repliesHtml += `</div>`;
+        } else {
+            repliesHtml = `<div class="replies"><p style="color:#aa986c;">暂无回复，来做第一个回复的人吧。</p></div>`;
+        }
+
+        let html = `<div style="margin-bottom: 15px;">
+                        <button class="back-btn" id="backThreadBtn">返回讨论列表</button>
+                    </div>
+                    <div class="post-container">
+                        <div class="post-title">${escapeHtml(thread.title)}</div>
+                        <div class="post-meta">${escapeHtml(thread.author)} · 发表于 ${thread.date} · ${thread.replyCount} 回复</div>
+                        <div class="post-body">
+                            ${escapeHtml(thread.content).replace(/\n/g, '<br>')}
+                        </div>
+                        ${repliesHtml}
+                        <div class="pagination" style="margin-top: 20px;">
+                            <span class="page-btn disabled">上一页</span>
+                            <span class="page-btn">1</span>
+                            <span class="page-btn disabled">下一页</span>
+                        </div>
+                        <hr>
+                        <div style="font-size: 12px; color: #9e8e66;">本论坛所有言论仅代表作者本人观点。</div>
+                    </div>`;
+        contentDiv.innerHTML = html;
+
+        document.getElementById("backThreadBtn")?.addEventListener("click", () => renderThreadList());
+
+        // 分页失效
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            if (btn.innerText !== "1") {
+                btn.addEventListener('click', () => alert("没有更多回复了。"));
+            }
+        });
+    }
+
+    // 导航栏逻辑（只有讨论区有效）
+    function setupNav() {
+        const navIndex = document.getElementById("navIndex");
+        const navDiscuss = document.getElementById("navDiscuss");
+        const navResource = document.getElementById("navResource");
+        const navServer = document.getElementById("navServer");
+        const navMember = document.getElementById("navMember");
+
+        const setActive = (active) => {
+            [navIndex, navDiscuss, navResource, navServer, navMember].forEach(el => {
+                if (el) el.classList.remove("active");
+            });
+            if (active) active.classList.add("active");
+        };
+
+        navIndex.addEventListener("click", () => {
+            setActive(navIndex);
+            renderBoardList();
+        });
+        navDiscuss.addEventListener("click", () => {
+            setActive(navDiscuss);
+            renderThreadList();
+        });
+        const dead = [navResource, navServer, navMember];
+        dead.forEach(nav => {
+            nav.addEventListener("click", () => {
+                setActive(navIndex);
+                alert("该板块暂时无法访问。");
+                renderBoardList();
+            });
+        });
+    }
+
+    function init() {
+        renderBoardList();
+        setupNav();
+    }
+    init();
+</script>
+</body>
+</html>
