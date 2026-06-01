@@ -55,7 +55,7 @@
 </div>
 
 <script>
-    // 获取仓库根路径（同 index.html 的逻辑）
+    // 自动获取项目根路径（例如 /mcforum.github.io/）
     function getBasePath() {
         var path = window.location.pathname;
         var match = path.match(/^\/[^\/]+\//);
@@ -67,7 +67,7 @@
     var BASE = getBasePath();
     var homeLink = document.getElementById('homeLink');
     if (homeLink) {
-        homeLink.href = BASE;   // 指向仓库根目录，会自动加载 index.html
+        homeLink.href = BASE;
     }
 </script>
 </body>
