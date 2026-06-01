@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCWORLD FORUM - 玩家社区</title>
     <style>
-        /* 样式与之前完全相同，省略重复代码以节省篇幅，实际使用时请保留完整样式 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #c2b994; font-family: 'Segoe UI', 'Verdana', Tahoma, 'Microsoft YaHei', sans-serif; font-size: 13px; color: #2b2a1e; padding: 25px 20px; }
         .forum { max-width: 1100px; margin: 0 auto; background: #fefcf5; border-radius: 8px; box-shadow: 0 3px 12px rgba(0,0,0,0.2); border: 1px solid #b6a77c; overflow: hidden; }
@@ -93,20 +92,19 @@
 </div>
 
 <script>
-    // 获取仓库根路径（例如：/repo-name/）
+    // 自动获取项目根路径（例如 /mcforum.github.io/）
     function getBasePath() {
         var path = window.location.pathname;
-        // 如果当前是项目站点（不是根域名），则提取第一级目录
+        // 匹配第一级目录（如 /mcforum.github.io/）
         var match = path.match(/^\/[^\/]+\//);
         if (match && match[0] !== '/') {
             return match[0];
         }
-        // 如果是个人站点或自定义域名，则返回根路径
         return '/';
     }
     var BASE = getBasePath();
 
-    // 失效跳转：跳转到仓库下的 404.html
+    // 失效跳转：跳转到项目根下的 404.html
     function goTo404() {
         window.location.href = BASE + "404.html";
     }
