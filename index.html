@@ -5,276 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCWORLD FORUM - 玩家社区</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #c2b994;
-            font-family: 'Segoe UI', 'Verdana', Tahoma, 'Microsoft YaHei', sans-serif;
-            font-size: 13px;
-            color: #2b2a1e;
-            padding: 25px 20px;
-        }
-        .forum {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #fefcf5;
-            border-radius: 8px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
-            border: 1px solid #b6a77c;
-            overflow: hidden;
-        }
-        .header {
-            background: #2f2c21;
-            padding: 16px 24px;
-            border-bottom: 3px solid #a39262;
-        }
-        .header h1 {
-            color: #f2e5b0;
-            font-size: 26px;
-            font-family: 'Courier New', monospace;
-            font-weight: normal;
-        }
-        .header p {
-            color: #cfc18a;
-            font-size: 11px;
-            margin-top: 5px;
-        }
-        .navbar {
-            background: #e5ddc5;
-            border-bottom: 1px solid #cdc09c;
-            padding-left: 20px;
-        }
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .navbar li {
-            padding: 10px 22px;
-            font-weight: bold;
-            color: #554b30;
-            cursor: pointer;
-            border-right: 1px solid #cdc09c;
-        }
-        .navbar li:hover {
-            background: #d9cfb2;
-        }
-        .navbar li.active {
-            background: #fefcf5;
-            color: #3b6b3b;
-            border-bottom: 2px solid #fefcf5;
-            margin-bottom: -1px;
-        }
-        .main {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .sidebar {
-            width: 220px;
-            background: #f4efdf;
-            border-right: 1px solid #dfd2b6;
-            padding: 18px 14px;
-        }
-        .user-card {
-            background: #fffdf5;
-            border: 1px solid #e2d5b8;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .user-card .name {
-            font-weight: bold;
-            font-size: 14px;
-            color: #4f5d3a;
-        }
-        .user-card .status {
-            font-size: 11px;
-            color: #8f7e58;
-            margin-top: 8px;
-            border-top: 1px dashed #e0d4bb;
-            padding-top: 6px;
-        }
-        .info-box {
-            background: #fffdf5;
-            border: 1px solid #e2d5b8;
-            border-radius: 5px;
-            padding: 12px;
-            margin-bottom: 18px;
-        }
-        .info-box h4 {
-            font-size: 13px;
-            margin-bottom: 6px;
-            color: #6b5a3a;
-            border-left: 3px solid #b7a56e;
-            padding-left: 8px;
-        }
-        .info-box p {
-            font-size: 11px;
-            color: #7f6f4a;
-            line-height: 1.5;
-        }
-        .content {
-            flex: 1;
-            background: #ffffff;
-            padding: 22px 26px;
-            min-height: 500px;
-        }
-        .board-item {
-            background: #fefcf7;
-            border: 1px solid #e9dfc6;
-            border-left: 4px solid #baab7a;
-            padding: 14px 18px;
-            margin-bottom: 14px;
-            cursor: pointer;
-        }
-        .board-item:hover {
-            background: #fef8ec;
-            border-left-color: #7a9662;
-        }
-        .board-item h3 {
-            font-size: 17px;
-            font-weight: normal;
-            margin-bottom: 5px;
-            color: #4d442b;
-        }
-        .board-item p {
-            font-size: 12px;
-            color: #8e7e56;
-        }
-        .board-item.dead {
-            opacity: 0.6;
-            cursor: pointer;
-            border-left-color: #b2a06d;
-        }
-        .board-item.dead:hover {
-            background: #fefcf7;
-        }
-        .thread-header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 2px solid #e3d7bb;
-            padding-bottom: 6px;
-            margin-bottom: 12px;
-            font-weight: bold;
-            color: #6b5e40;
-            font-size: 12px;
-        }
-        .thread-row {
-            border-bottom: 1px solid #f1e9d6;
-            padding: 12px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-        .thread-row:hover {
-            background: #fffcf0;
-        }
-        .thread-title {
-            font-size: 14px;
-            color: #2f5a2f;
-        }
-        .thread-meta {
-            font-size: 11px;
-            color: #ac9a6b;
-        }
-        .post-container {
-            background: #fefcf7;
-            border: 1px solid #ede2cb;
-            padding: 20px;
-            border-radius: 6px;
-        }
-        .post-title {
-            font-size: 20px;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid #e2d5ba;
-        }
-        .post-meta {
-            font-size: 12px;
-            color: #8e7b4f;
-            margin-bottom: 20px;
-        }
-        .post-body {
-            background: #fffef9;
-            padding: 18px;
-            border: 1px solid #f0e6d2;
-            line-height: 1.6;
-            font-size: 14px;
-            white-space: pre-wrap;
-        }
-        .replies {
-            margin-top: 25px;
-            border-top: 1px solid #e9ddc4;
-            padding-top: 18px;
-        }
-        .reply-item {
-            background: #fefcf5;
-            border-bottom: 1px solid #eee2cf;
-            padding: 12px 0;
-        }
-        .reply-author {
-            font-weight: bold;
-            font-size: 12px;
-            color: #7a673f;
-        }
-        .reply-content {
-            font-size: 13px;
-            margin-top: 5px;
-            color: #4a412c;
-        }
-        .pagination {
-            margin-top: 25px;
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-        .page-btn {
-            padding: 4px 12px;
-            background: #e8dfc8;
-            border: 1px solid #cdc09c;
-            cursor: pointer;
-            font-size: 12px;
-            border-radius: 4px;
-        }
-        .page-btn.disabled {
-            opacity: 0.5;
-            cursor: pointer;
-            pointer-events: auto;
-        }
-        .back-btn {
-            background: #e0d3b6;
-            border: none;
-            padding: 5px 16px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-bottom: 18px;
-            display: inline-block;
-        }
-        footer {
-            background: #ece3cf;
-            border-top: 1px solid #d5c8ab;
-            text-align: center;
-            padding: 12px;
-            font-size: 11px;
-            color: #9a8a62;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #e6dac2;
-            margin: 12px 0;
-        }
-        @media (max-width: 700px) {
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #dfd2b6;
-            }
-        }
+        /* 样式与之前完全相同，省略重复代码以节省篇幅，实际使用时请保留完整样式 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #c2b994; font-family: 'Segoe UI', 'Verdana', Tahoma, 'Microsoft YaHei', sans-serif; font-size: 13px; color: #2b2a1e; padding: 25px 20px; }
+        .forum { max-width: 1100px; margin: 0 auto; background: #fefcf5; border-radius: 8px; box-shadow: 0 3px 12px rgba(0,0,0,0.2); border: 1px solid #b6a77c; overflow: hidden; }
+        .header { background: #2f2c21; padding: 16px 24px; border-bottom: 3px solid #a39262; }
+        .header h1 { color: #f2e5b0; font-size: 26px; font-family: 'Courier New', monospace; font-weight: normal; }
+        .header p { color: #cfc18a; font-size: 11px; margin-top: 5px; }
+        .navbar { background: #e5ddc5; border-bottom: 1px solid #cdc09c; padding-left: 20px; }
+        .navbar ul { list-style: none; display: flex; flex-wrap: wrap; }
+        .navbar li { padding: 10px 22px; font-weight: bold; color: #554b30; cursor: pointer; border-right: 1px solid #cdc09c; }
+        .navbar li:hover { background: #d9cfb2; }
+        .navbar li.active { background: #fefcf5; color: #3b6b3b; border-bottom: 2px solid #fefcf5; margin-bottom: -1px; }
+        .main { display: flex; flex-wrap: wrap; }
+        .sidebar { width: 220px; background: #f4efdf; border-right: 1px solid #dfd2b6; padding: 18px 14px; }
+        .user-card { background: #fffdf5; border: 1px solid #e2d5b8; padding: 12px; border-radius: 5px; margin-bottom: 20px; }
+        .user-card .name { font-weight: bold; font-size: 14px; color: #4f5d3a; }
+        .user-card .status { font-size: 11px; color: #8f7e58; margin-top: 8px; border-top: 1px dashed #e0d4bb; padding-top: 6px; }
+        .info-box { background: #fffdf5; border: 1px solid #e2d5b8; border-radius: 5px; padding: 12px; margin-bottom: 18px; }
+        .info-box h4 { font-size: 13px; margin-bottom: 6px; color: #6b5a3a; border-left: 3px solid #b7a56e; padding-left: 8px; }
+        .info-box p { font-size: 11px; color: #7f6f4a; line-height: 1.5; }
+        .content { flex: 1; background: #ffffff; padding: 22px 26px; min-height: 500px; }
+        .board-item { background: #fefcf7; border: 1px solid #e9dfc6; border-left: 4px solid #baab7a; padding: 14px 18px; margin-bottom: 14px; cursor: pointer; }
+        .board-item:hover { background: #fef8ec; border-left-color: #7a9662; }
+        .board-item h3 { font-size: 17px; font-weight: normal; margin-bottom: 5px; color: #4d442b; }
+        .board-item p { font-size: 12px; color: #8e7e56; }
+        .board-item.dead { opacity: 0.6; cursor: pointer; border-left-color: #b2a06d; }
+        .board-item.dead:hover { background: #fefcf7; }
+        .thread-header { display: flex; justify-content: space-between; border-bottom: 2px solid #e3d7bb; padding-bottom: 6px; margin-bottom: 12px; font-weight: bold; color: #6b5e40; font-size: 12px; }
+        .thread-row { border-bottom: 1px solid #f1e9d6; padding: 12px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .thread-row:hover { background: #fffcf0; }
+        .thread-title { font-size: 14px; color: #2f5a2f; }
+        .thread-meta { font-size: 11px; color: #ac9a6b; }
+        .post-container { background: #fefcf7; border: 1px solid #ede2cb; padding: 20px; border-radius: 6px; }
+        .post-title { font-size: 20px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid #e2d5ba; }
+        .post-meta { font-size: 12px; color: #8e7b4f; margin-bottom: 20px; }
+        .post-body { background: #fffef9; padding: 18px; border: 1px solid #f0e6d2; line-height: 1.6; font-size: 14px; white-space: pre-wrap; }
+        .replies { margin-top: 25px; border-top: 1px solid #e9ddc4; padding-top: 18px; }
+        .reply-item { background: #fefcf5; border-bottom: 1px solid #eee2cf; padding: 12px 0; }
+        .reply-author { font-weight: bold; font-size: 12px; color: #7a673f; }
+        .reply-content { font-size: 13px; margin-top: 5px; color: #4a412c; }
+        .pagination { margin-top: 25px; display: flex; gap: 8px; justify-content: center; }
+        .page-btn { padding: 4px 12px; background: #e8dfc8; border: 1px solid #cdc09c; cursor: pointer; font-size: 12px; border-radius: 4px; }
+        .back-btn { background: #e0d3b6; border: none; padding: 5px 16px; border-radius: 16px; cursor: pointer; font-size: 12px; margin-bottom: 18px; display: inline-block; }
+        footer { background: #ece3cf; border-top: 1px solid #d5c8ab; text-align: center; padding: 12px; font-size: 11px; color: #9a8a62; }
+        hr { border: none; border-top: 1px solid #e6dac2; margin: 12px 0; }
+        @media (max-width: 700px) { .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #dfd2b6; } }
     </style>
 </head>
 <body>
@@ -317,22 +93,34 @@
 </div>
 
 <script>
-    // 所有失效跳转统一使用此函数
+    // 获取仓库根路径（例如：/repo-name/）
+    function getBasePath() {
+        var path = window.location.pathname;
+        // 如果当前是项目站点（不是根域名），则提取第一级目录
+        var match = path.match(/^\/[^\/]+\//);
+        if (match && match[0] !== '/') {
+            return match[0];
+        }
+        // 如果是个人站点或自定义域名，则返回根路径
+        return '/';
+    }
+    var BASE = getBasePath();
+
+    // 失效跳转：跳转到仓库下的 404.html
     function goTo404() {
-        window.location.href = "/404.html";
+        window.location.href = BASE + "404.html";
     }
 
-    // 板块数据（只有讨论区可用，其他失效）
+    // 板块数据（只有讨论区可用）
     const boards = [
         { id: 1, name: "综合讨论区", desc: "Minecraft 综合话题讨论", available: true, threadCount: 342 },
-        { id: 2, name: "模组发布区", desc: "分享各类模组与整合包", available: false, threadCount: 0 },
-        { id: 3, name: "服务器宣传", desc: "寻找服务器或发布你的世界", available: false, threadCount: 0 },
-        { id: 4, name: "红石研究", desc: "红石电路与机械", available: false, threadCount: 0 },
-        { id: 5, name: "建筑展示", desc: "作品截图与存档分享", available: false, threadCount: 0 },
-        { id: 6, name: "创作区", desc: "皮肤/地图/数据包", available: false, threadCount: 0 }
+        { id: 2, name: "模组发布区", desc: "分享各类模组与整合包", available: false },
+        { id: 3, name: "服务器宣传", desc: "寻找服务器或发布你的世界", available: false },
+        { id: 4, name: "红石研究", desc: "红石电路与机械", available: false },
+        { id: 5, name: "建筑展示", desc: "作品截图与存档分享", available: false },
+        { id: 6, name: "创作区", desc: "皮肤/地图/数据包", available: false }
     ];
 
-    // 讨论区帖子（2016年风格，包含未命名用户关于Ember_glow的帖子）
     const discussionThreads = [
         {
             id: 1,
@@ -381,9 +169,7 @@
             date: "2016-06-25",
             replyCount: 5,
             content: "刚玩工业2，机器一接高压就炸，变压器怎么用啊？",
-            replies: [
-                { author: "电工", content: "需要用变压器降压，MFSU输出512，用MV变压器转成128。" }
-            ]
+            replies: [ { author: "电工", content: "需要用变压器降压，MFSU输出512，用MV变压器转成128。" } ]
         },
         {
             id: 5,
@@ -404,15 +190,11 @@
             date: "2016-05-30",
             replyCount: 3,
             content: "找了好久没找到，求推荐。",
-            replies: [
-                { author: "mod搬运工", content: "有个叫TwiForest的addon，不过BUG很多。" }
-            ]
+            replies: [ { author: "mod搬运工", content: "有个叫TwiForest的addon，不过BUG很多。" } ]
         }
     ];
 
     let currentView = "boardList";
-    let currentThread = null;
-
     const contentDiv = document.getElementById("mainContent");
 
     function escapeHtml(str) {
@@ -425,170 +207,80 @@
         });
     }
 
-    // 板块列表
     function renderBoardList() {
         currentView = "boardList";
         let html = `<h2 style="margin-bottom: 18px; font-weight: normal;">论坛板块</h2>`;
         boards.forEach(board => {
             if (board.available) {
-                html += `
-                    <div class="board-item" data-board-id="${board.id}" data-available="true">
-                        <h3>${escapeHtml(board.name)}</h3>
-                        <p>${escapeHtml(board.desc)}</p>
-                        <div style="font-size: 11px; margin-top: 6px; color:#b8a775;">主题: ${board.threadCount}</div>
-                    </div>
-                `;
+                html += `<div class="board-item" data-available="true"><h3>${escapeHtml(board.name)}</h3><p>${escapeHtml(board.desc)}</p><div style="font-size: 11px; margin-top: 6px; color:#b8a775;">主题: ${board.threadCount}</div></div>`;
             } else {
-                html += `
-                    <div class="board-item dead" data-board-id="${board.id}" data-available="false">
-                        <h3><span style="color:#b3a070;">${escapeHtml(board.name)}</span></h3>
-                        <p>${escapeHtml(board.desc)}</p>
-                    </div>
-                `;
+                html += `<div class="board-item dead" data-available="false"><h3><span style="color:#b3a070;">${escapeHtml(board.name)}</span></h3><p>${escapeHtml(board.desc)}</p></div>`;
             }
         });
         contentDiv.innerHTML = html;
-
         document.querySelectorAll('.board-item').forEach(el => {
             const available = el.getAttribute('data-available') === 'true';
-            if (available) {
-                el.addEventListener('click', () => renderThreadList());
-            } else {
-                el.addEventListener('click', () => goTo404());
-            }
+            if (available) el.addEventListener('click', () => renderThreadList());
+            else el.addEventListener('click', goTo404);
         });
     }
 
-    // 帖子列表（带失效分页）
     function renderThreadList() {
         currentView = "threadList";
-        let html = `<div style="margin-bottom: 18px;">
-                        <button class="back-btn" id="backHomeBtn">返回板块首页</button>
-                    </div>
+        let html = `<div style="margin-bottom: 18px;"><button class="back-btn" id="backHomeBtn">返回板块首页</button></div>
                     <h2 style="margin-bottom: 8px;">综合讨论区</h2>
-                    <div class="thread-header">
-                        <span>主题</span>
-                        <span>回复 / 作者</span>
-                    </div>
+                    <div class="thread-header"><span>主题</span><span>回复 / 作者</span></div>
                     <div class="thread-list">`;
         discussionThreads.forEach(thread => {
-            html += `
-                <div class="thread-row" data-thread-id="${thread.id}">
-                    <div class="thread-title">${escapeHtml(thread.title)}</div>
-                    <div class="thread-meta">${thread.replyCount} 回复 · ${escapeHtml(thread.author)}</div>
-                </div>
-            `;
+            html += `<div class="thread-row" data-thread-id="${thread.id}">
+                        <div class="thread-title">${escapeHtml(thread.title)}</div>
+                        <div class="thread-meta">${thread.replyCount} 回复 · ${escapeHtml(thread.author)}</div>
+                    </div>`;
         });
-        html += `</div>`;
-
-        // 失效的分页组件（点击跳转404）
-        html += `<div class="pagination">
-                    <span class="page-btn" data-page="prev">上一页</span>
-                    <span class="page-btn" data-page="1">1</span>
-                    <span class="page-btn" data-page="next">下一页</span>
-                </div>`;
+        html += `</div><div class="pagination"><span class="page-btn">上一页</span><span class="page-btn">1</span><span class="page-btn">下一页</span></div>`;
         contentDiv.innerHTML = html;
-
         document.getElementById("backHomeBtn")?.addEventListener("click", () => renderBoardList());
-
-        // 分页按钮全部跳转404（除了当前页码本身也可以作为失效处理，统一跳转）
-        document.querySelectorAll('.page-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                goTo404();
-            });
-        });
-
+        document.querySelectorAll('.page-btn').forEach(btn => btn.addEventListener('click', goTo404));
         document.querySelectorAll('.thread-row').forEach(el => {
             const tid = parseInt(el.getAttribute('data-thread-id'));
             const thread = discussionThreads.find(t => t.id === tid);
-            if (thread) {
-                el.addEventListener('click', () => renderPostDetail(thread));
-            }
+            if (thread) el.addEventListener('click', () => renderPostDetail(thread));
         });
     }
 
-    // 帖子详情（失效分页）
     function renderPostDetail(thread) {
-        currentView = "postDetail";
-        currentThread = thread;
-        let repliesHtml = '';
-        if (thread.replies && thread.replies.length) {
-            repliesHtml = `<div class="replies"><h4 style="margin-bottom: 12px;">回复 (${thread.replies.length})</h4>`;
-            thread.replies.forEach(rep => {
-                repliesHtml += `
-                    <div class="reply-item">
-                        <div class="reply-author">${escapeHtml(rep.author)}</div>
-                        <div class="reply-content">${escapeHtml(rep.content)}</div>
-                    </div>
-                `;
-            });
-            repliesHtml += `</div>`;
-        } else {
-            repliesHtml = `<div class="replies"><p style="color:#aa986c;">暂无回复，来做第一个回复的人吧。</p></div>`;
-        }
-
-        let html = `<div style="margin-bottom: 15px;">
-                        <button class="back-btn" id="backThreadBtn">返回讨论列表</button>
-                    </div>
+        let repliesHtml = '<div class="replies"><h4 style="margin-bottom: 12px;">回复</h4>';
+        (thread.replies || []).forEach(rep => {
+            repliesHtml += `<div class="reply-item"><div class="reply-author">${escapeHtml(rep.author)}</div><div class="reply-content">${escapeHtml(rep.content)}</div></div>`;
+        });
+        repliesHtml += `</div>`;
+        let html = `<div style="margin-bottom: 15px;"><button class="back-btn" id="backThreadBtn">返回讨论列表</button></div>
                     <div class="post-container">
                         <div class="post-title">${escapeHtml(thread.title)}</div>
-                        <div class="post-meta">${escapeHtml(thread.author)} · 发表于 ${thread.date} · ${thread.replyCount} 回复</div>
-                        <div class="post-body">
-                            ${escapeHtml(thread.content).replace(/\n/g, '<br>')}
-                        </div>
+                        <div class="post-meta">${escapeHtml(thread.author)} · ${thread.date} · ${thread.replyCount} 回复</div>
+                        <div class="post-body">${escapeHtml(thread.content).replace(/\n/g, '<br>')}</div>
                         ${repliesHtml}
-                        <div class="pagination" style="margin-top: 20px;">
-                            <span class="page-btn" data-page="prev">上一页</span>
-                            <span class="page-btn" data-page="1">1</span>
-                            <span class="page-btn" data-page="next">下一页</span>
-                        </div>
-                        <hr>
-                        <div style="font-size: 12px; color: #9e8e66;">本论坛所有言论仅代表作者本人观点。</div>
+                        <div class="pagination"><span class="page-btn">上一页</span><span class="page-btn">1</span><span class="page-btn">下一页</span></div>
+                        <hr><div style="font-size: 12px; color: #9e8e66;">本论坛所有言论仅代表作者本人观点。</div>
                     </div>`;
         contentDiv.innerHTML = html;
-
         document.getElementById("backThreadBtn")?.addEventListener("click", () => renderThreadList());
-
-        // 帖子内的分页按钮也失效跳转404
-        document.querySelectorAll('.page-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                goTo404();
-            });
-        });
+        document.querySelectorAll('.page-btn').forEach(btn => btn.addEventListener('click', goTo404));
     }
 
-    // 导航栏逻辑（失效的导航跳转404）
     function setupNav() {
         const navIndex = document.getElementById("navIndex");
         const navDiscuss = document.getElementById("navDiscuss");
         const navResource = document.getElementById("navResource");
         const navServer = document.getElementById("navServer");
         const navMember = document.getElementById("navMember");
-
         const setActive = (active) => {
-            [navIndex, navDiscuss, navResource, navServer, navMember].forEach(el => {
-                if (el) el.classList.remove("active");
-            });
+            [navIndex, navDiscuss, navResource, navServer, navMember].forEach(el => el?.classList.remove("active"));
             if (active) active.classList.add("active");
         };
-
-        navIndex.addEventListener("click", () => {
-            setActive(navIndex);
-            renderBoardList();
-        });
-        navDiscuss.addEventListener("click", () => {
-            setActive(navDiscuss);
-            renderThreadList();
-        });
-        // 失效导航：跳转404
-        const deadNavs = [navResource, navServer, navMember];
-        deadNavs.forEach(nav => {
-            nav.addEventListener("click", () => {
-                goTo404();
-            });
-        });
+        navIndex.addEventListener("click", () => { setActive(navIndex); renderBoardList(); });
+        navDiscuss.addEventListener("click", () => { setActive(navDiscuss); renderThreadList(); });
+        [navResource, navServer, navMember].forEach(nav => nav?.addEventListener("click", goTo404));
     }
 
     function init() {
