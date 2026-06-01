@@ -146,7 +146,7 @@
         }
         .board-item.dead {
             opacity: 0.6;
-            cursor: default;
+            cursor: pointer;
             border-left-color: #b2a06d;
         }
         .board-item.dead:hover {
@@ -242,8 +242,8 @@
         }
         .page-btn.disabled {
             opacity: 0.5;
-            cursor: not-allowed;
-            pointer-events: none;
+            cursor: pointer;
+            pointer-events: auto;
         }
         .back-btn {
             background: #e0d3b6;
@@ -317,9 +317,12 @@
 </div>
 
 <script>
-    // ------------------------------
+    // 所有失效跳转统一使用此函数
+    function goTo404() {
+        window.location.href = "/404.html";
+    }
+
     // 板块数据（只有讨论区可用，其他失效）
-    // ------------------------------
     const boards = [
         { id: 1, name: "综合讨论区", desc: "Minecraft 综合话题讨论", available: true, threadCount: 342 },
         { id: 2, name: "模组发布区", desc: "分享各类模组与整合包", available: false, threadCount: 0 },
@@ -329,8 +332,7 @@
         { id: 6, name: "创作区", desc: "皮肤/地图/数据包", available: false, threadCount: 0 }
     ];
 
-    // 讨论区帖子（2016年风格：PE版，1.7.10，暮色森林，天堂传送门等，包含未命名用户关于Ember_glow的帖子）
-    // 每个帖子自带回复数据
+    // 讨论区帖子（2016年风格，包含未命名用户关于Ember_glow的帖子）
     const discussionThreads = [
         {
             id: 1,
@@ -364,7 +366,7 @@
             author: "未命名用户",
             date: "2016-08-19",
             replyCount: 11,
-            content: "我开了一个小服务器，就几个朋友玩。这几天来了一个叫 Ember_glow 的人，不知道他怎么找到IP的。他开始到处破坏，用TNT炸房子，还在告示牌上写奇怪的话。我封了他IP，他换号又来。有人认识这个人吗？留言里写着“gwko”。",
+            content: "我开了一个小服务器，就几个朋友玩。这几天来了一个叫 Ember_glow 的人，不知道他怎么找到IP的。他开始到处破坏，用TNT炸房子，还在告示牌上写奇怪的话。我封了他IP，他换号又来。有人认识这个人吗？留言里写着“你挡不住余烬”。",
             replies: [
                 { author: "路人甲", content: "没听过，可能是哪个熊孩子。" },
                 { author: "服务器主", content: "建议加白名单，开正版验证。" },
@@ -420,8 +422,6 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
 
@@ -432,7 +432,7 @@
         boards.forEach(board => {
             if (board.available) {
                 html += `
-                    <div class="board-item" data-board-id="${board.id}">
+                    <div class="board-item" data-board-id="${board.id}" data-available="true">
                         <h3>${escapeHtml(board.name)}</h3>
                         <p>${escapeHtml(board.desc)}</p>
                         <div style="font-size: 11px; margin-top: 6px; color:#b8a775;">主题: ${board.threadCount}</div>
@@ -440,8 +440,8 @@
                 `;
             } else {
                 html += `
-                    <div class="board-item dead" data-board-id="${board.id}">
-                        <h3><span style="color:#b3a070;">${escapeHtml(board.name)}</span> <span style="font-size:11px;">[无法访问]</span></h3>
+                    <div class="board-item dead" data-board-id="${board.id}" data-available="false">
+                        <h3><span style="color:#b3a070;">${escapeHtml(board.name)}</span></h3>
                         <p>${escapeHtml(board.desc)}</p>
                     </div>
                 `;
@@ -449,18 +449,17 @@
         });
         contentDiv.innerHTML = html;
 
-        document.querySelectorAll('.board-item[data-board-id]').forEach(el => {
-            const boardId = parseInt(el.getAttribute('data-board-id'));
-            const board = boards.find(b => b.id === boardId);
-            if (board && board.available) {
+        document.querySelectorAll('.board-item').forEach(el => {
+            const available = el.getAttribute('data-available') === 'true';
+            if (available) {
                 el.addEventListener('click', () => renderThreadList());
             } else {
-                el.addEventListener('click', () => alert("该板块暂时无法访问。"));
+                el.addEventListener('click', () => goTo404());
             }
         });
     }
 
-    // 帖子列表（带失效的分页）
+    // 帖子列表（带失效分页）
     function renderThreadList() {
         currentView = "threadList";
         let html = `<div style="margin-bottom: 18px;">
@@ -482,26 +481,24 @@
         });
         html += `</div>`;
 
-        // 失效的分页组件
+        // 失效的分页组件（点击跳转404）
         html += `<div class="pagination">
-                    <span class="page-btn disabled">上一页</span>
-                    <span class="page-btn">1</span>
-                    <span class="page-btn disabled">下一页</span>
+                    <span class="page-btn" data-page="prev">上一页</span>
+                    <span class="page-btn" data-page="1">1</span>
+                    <span class="page-btn" data-page="next">下一页</span>
                 </div>`;
         contentDiv.innerHTML = html;
 
         document.getElementById("backHomeBtn")?.addEventListener("click", () => renderBoardList());
 
-        // 分页按钮全部失效
+        // 分页按钮全部跳转404（除了当前页码本身也可以作为失效处理，统一跳转）
         document.querySelectorAll('.page-btn').forEach(btn => {
-            if (btn.innerText !== "1") {
-                btn.addEventListener('click', () => alert("无法加载更多帖子。"));
-            } else {
-                btn.addEventListener('click', () => {});
-            }
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                goTo404();
+            });
         });
 
-        // 绑定帖子点击
         document.querySelectorAll('.thread-row').forEach(el => {
             const tid = parseInt(el.getAttribute('data-thread-id'));
             const thread = discussionThreads.find(t => t.id === tid);
@@ -511,7 +508,7 @@
         });
     }
 
-    // 帖子详情（包含回复区和失效分页）
+    // 帖子详情（失效分页）
     function renderPostDetail(thread) {
         currentView = "postDetail";
         currentThread = thread;
@@ -542,9 +539,9 @@
                         </div>
                         ${repliesHtml}
                         <div class="pagination" style="margin-top: 20px;">
-                            <span class="page-btn disabled">上一页</span>
-                            <span class="page-btn">1</span>
-                            <span class="page-btn disabled">下一页</span>
+                            <span class="page-btn" data-page="prev">上一页</span>
+                            <span class="page-btn" data-page="1">1</span>
+                            <span class="page-btn" data-page="next">下一页</span>
                         </div>
                         <hr>
                         <div style="font-size: 12px; color: #9e8e66;">本论坛所有言论仅代表作者本人观点。</div>
@@ -553,15 +550,16 @@
 
         document.getElementById("backThreadBtn")?.addEventListener("click", () => renderThreadList());
 
-        // 分页失效
+        // 帖子内的分页按钮也失效跳转404
         document.querySelectorAll('.page-btn').forEach(btn => {
-            if (btn.innerText !== "1") {
-                btn.addEventListener('click', () => alert("没有更多回复了。"));
-            }
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                goTo404();
+            });
         });
     }
 
-    // 导航栏逻辑（只有讨论区有效）
+    // 导航栏逻辑（失效的导航跳转404）
     function setupNav() {
         const navIndex = document.getElementById("navIndex");
         const navDiscuss = document.getElementById("navDiscuss");
@@ -584,12 +582,11 @@
             setActive(navDiscuss);
             renderThreadList();
         });
-        const dead = [navResource, navServer, navMember];
-        dead.forEach(nav => {
+        // 失效导航：跳转404
+        const deadNavs = [navResource, navServer, navMember];
+        deadNavs.forEach(nav => {
             nav.addEventListener("click", () => {
-                setActive(navIndex);
-                alert("该板块暂时无法访问。");
-                renderBoardList();
+                goTo404();
             });
         });
     }
