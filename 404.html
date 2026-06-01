@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>页面未找到 - MCWORLD FORUM</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #c2b994;
             font-family: 'Segoe UI', 'Verdana', Tahoma, 'Microsoft YaHei', sans-serif;
@@ -32,65 +28,15 @@
             text-align: center;
             padding: 40px 30px 50px;
         }
-        .error-header {
-            margin-bottom: 30px;
-        }
-        .error-header h1 {
-            font-size: 72px;
-            color: #8b7a50;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
-        .error-header p {
-            color: #a3946a;
-            font-size: 16px;
-        }
-        .error-message {
-            background: #faf6ea;
-            border: 1px solid #e9dec4;
-            padding: 25px;
-            border-radius: 6px;
-            margin-bottom: 30px;
-        }
-        .error-message h2 {
-            font-size: 20px;
-            font-weight: normal;
-            margin-bottom: 12px;
-            color: #5f5237;
-        }
-        .error-message .code {
-            font-family: monospace;
-            background: #ece2cf;
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-        .home-link {
-            display: inline-block;
-            background: #dad0b4;
-            color: #3b3522;
-            text-decoration: none;
-            padding: 8px 24px;
-            border-radius: 30px;
-            font-weight: bold;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .home-link:hover {
-            background: #c9bc98;
-        }
-        footer {
-            margin-top: 30px;
-            font-size: 11px;
-            color: #b8a87c;
-            border-top: 1px solid #ece2cf;
-            padding-top: 18px;
-        }
+        .error-header { margin-bottom: 30px; }
+        .error-header h1 { font-size: 72px; color: #8b7a50; font-family: 'Courier New', monospace; letter-spacing: 4px; margin-bottom: 10px; }
+        .error-header p { color: #a3946a; font-size: 16px; }
+        .error-message { background: #faf6ea; border: 1px solid #e9dec4; padding: 25px; border-radius: 6px; margin-bottom: 30px; }
+        .error-message h2 { font-size: 20px; font-weight: normal; margin-bottom: 12px; color: #5f5237; }
+        .error-message .code { font-family: monospace; background: #ece2cf; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; margin-top: 8px; }
+        .home-link { display: inline-block; background: #dad0b4; color: #3b3522; text-decoration: none; padding: 8px 24px; border-radius: 30px; font-weight: bold; transition: background 0.2s; cursor: pointer; }
+        .home-link:hover { background: #c9bc98; }
+        footer { margin-top: 30px; font-size: 11px; color: #b8a87c; border-top: 1px solid #ece2cf; padding-top: 18px; }
     </style>
 </head>
 <body>
@@ -104,10 +50,25 @@
         <p>你访问的页面可能已被搬移、删除，或者从未存在过。</p>
         <div class="code">错误代码: 404 - 资源不存在</div>
     </div>
-    <a href="/" class="home-link">← 返回论坛首页</a>
-    <footer>
-        MCWORLD FORUM · 2016
-    </footer>
+    <a class="home-link" id="homeLink">← 返回论坛首页</a>
+    <footer>MCWORLD FORUM · 2016</footer>
 </div>
+
+<script>
+    // 获取仓库根路径（同 index.html 的逻辑）
+    function getBasePath() {
+        var path = window.location.pathname;
+        var match = path.match(/^\/[^\/]+\//);
+        if (match && match[0] !== '/') {
+            return match[0];
+        }
+        return '/';
+    }
+    var BASE = getBasePath();
+    var homeLink = document.getElementById('homeLink');
+    if (homeLink) {
+        homeLink.href = BASE;   // 指向仓库根目录，会自动加载 index.html
+    }
+</script>
 </body>
 </html>
